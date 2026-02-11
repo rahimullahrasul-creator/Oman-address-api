@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wasul — Home Delivery for Every Address in Oman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --orange-500: #e8682a;
+            --orange-600: #d45a1f;
+            --orange-50: #fef5f0;
+            --sand-100: #f9f6f2;
+            --sand-200: #f0ebe3;
+            --charcoal: #1a1a1a;
+            --slate: #4a4a4a;
+            --muted: #7a7a7a;
+            --white: #ffffff;
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--charcoal);
+            background: var(--white);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .nav-logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6rem;
+            color: var(--orange-500);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--slate);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--charcoal);
+        }
+
+        .nav-cta {
+            background: var(--orange-500) !important;
+            color: var(--white) !important;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600 !important;
+            transition: background 0.2s !important;
+        }
+
+        .nav-cta:hover {
+            background: var(--orange-600) !important;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 160px 40px 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3.6rem;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            color: var(--charcoal);
+            margin-bottom: 24px;
+        }
+
+        .hero-text h1 span {
+            color: var(--orange-500);
+        }
+
+        .hero-text p {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--slate);
+            margin-bottom: 40px;
+            max-width: 480px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--orange-500);
+            color: var(--white);
+            padding: 16px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-600);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(232, 104, 42, 0.3);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--slate);
+            padding: 16px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 1.5px solid var(--sand-200);
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--orange-500);
+            color: var(--orange-500);
+        }
+
+        /* HERO VISUAL */
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-card {
+            background: var(--sand-100);
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
+            background: var(--orange-500);
+            opacity: 0.06;
+            border-radius: 50%;
+        }
+
+        .mock-code {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            margin-bottom: 20px;
+        }
+
+        .mock-code-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .mock-code-value {
+            font-family: 'DM Sans', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--orange-500);
+            letter-spacing: 2px;
+        }
+
+        .mock-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .mock-detail {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .mock-detail-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .mock-detail-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--charcoal);
+        }
+
+        .mock-detail-value.green {
+            color: #16a34a;
+        }
+
+        /* HOW IT WORKS */
+        .how-it-works {
+            padding: 100px 40px;
+            background: var(--sand-100);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 64px;
+        }
+
+        .section-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--orange-500);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .section-header h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.6rem;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            color: var(--slate);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .steps {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 40px 24px;
+            background: var(--white);
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+
+        .step:hover {
+            transform: translateY(-4px);
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--orange-50);
+            color: var(--orange-500);
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .step h3 {
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .step p {
+            color: var(--slate);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        /* FOR BUSINESSES */
+        .for-business {
+            padding: 100px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .business-text .section-label {
+            text-align: left;
+        }
+
+        .business-text h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.4rem;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .business-text p {
+            color: var(--slate);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: var(--slate);
+            line-height: 1.5;
+        }
+
+        .feature-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            background: var(--orange-50);
+            color: var(--orange-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 1px;
+        }
+
+        /* API PREVIEW */
+        .api-preview {
+            background: var(--charcoal);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .api-preview-header {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .api-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .api-dot.red { background: #ff5f57; }
+        .api-dot.yellow { background: #febc2e; }
+        .api-dot.green { background: #28c840; }
+
+        .api-preview-body {
+            padding: 24px;
+            font-family: 'DM Sans', monospace;
+            font-size: 0.82rem;
+            line-height: 1.8;
+            color: #a0a0a0;
+            overflow-x: auto;
+        }
+
+        .api-preview-body .keyword { color: #c792ea; }
+        .api-preview-body .string { color: #c3e88d; }
+        .api-preview-body .url { color: #82aaff; }
+        .api-preview-body .comment { color: #546e7a; }
+        .api-preview-body .key { color: #f78c6c; }
+
+        /* CTA */
+        .cta-section {
+            padding: 100px 40px;
+            background: var(--sand-100);
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.6rem;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: var(--slate);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 40px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--sand-200);
+        }
+
+        footer a {
+            color: var(--slate);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--orange-500);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav {
+                padding: 16px 20px;
+            }
+
+            .nav-links a:not(.nav-cta) {
+                display: none;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 120px 20px 60px;
+                gap: 40px;
+            }
+
+            .hero-text h1 {
+                font-size: 2.4rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-primary, .btn-secondary {
+                justify-content: center;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .for-business {
+                grid-template-columns: 1fr;
+                padding: 60px 20px;
+                gap: 40px;
+            }
+
+            .how-it-works, .cta-section {
+                padding: 60px 20px;
+            }
+
+            .section-header h2, .business-text h2, .cta-section h2 {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: stretch;
+                max-width: 320px;
+                margin: 0 auto;
+            }
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-text { animation: fadeUp 0.7s ease-out; }
+        .hero-visual { animation: fadeUp 0.7s ease-out 0.15s both; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="nav-logo">Wasul</a>
+        <div class="nav-links">
+            <a href="#how-it-works">How It Works</a>
+            <a href="#for-business">For Business</a>
+            <a href="register.html" class="nav-cta">Register Your Home</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Deliver to <span>every home</span> in Oman</h1>
+            <p>Millions of homes in Oman have no street address. Wasul gives every home a unique delivery code, so you can finally receive food, packages, and more — right at your door.</p>
+            <div class="hero-actions">
+                <a href="register.html" class="btn-primary">Register Your Address</a>
+                <a href="#for-business" class="btn-secondary">For Businesses</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-card">
+                <div class="mock-code">
+                    <div class="mock-code-label">Your Wasul Code</div>
+                    <div class="mock-code-value">OM-MUS-4729A</div>
+                </div>
+                <div class="mock-details">
+                    <div class="mock-detail">
+                        <div class="mock-detail-label">Area</div>
+                        <div class="mock-detail-value">Al Khuwair, Muscat</div>
+                    </div>
+                    <div class="mock-detail">
+                        <div class="mock-detail-label">Status</div>
+                        <div class="mock-detail-value green">Verified</div>
+                    </div>
+                    <div class="mock-detail">
+                        <div class="mock-detail-label">Deliveries</div>
+                        <div class="mock-detail-value">12 completed</div>
+                    </div>
+                    <div class="mock-detail">
+                        <div class="mock-detail-label">GPS</div>
+                        <div class="mock-detail-value">Linked</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-header">
+            <div class="section-label">How It Works</div>
+            <h2>Get your address in three steps</h2>
+            <p>No paperwork, no waiting. Register your home location once and use your Wasul code everywhere you order.</p>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Pin Your Home</h3>
+                <p>Open the registration page and drop a pin on your home's exact location using GPS or the interactive map.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Get Your Code</h3>
+                <p>Instantly receive a unique Wasul code tied to your location. Use it like a street address whenever you order.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Receive Deliveries</h3>
+                <p>Share your code with restaurants, shops, or any delivery service. Drivers navigate straight to your door.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="for-business" id="for-business">
+        <div class="business-text">
+            <div class="section-label">For Restaurants & Delivery Partners</div>
+            <h2>Reach every customer, not just the ones with addresses</h2>
+            <p>Integrate the Wasul API into your ordering system and unlock deliveries to homes that were previously unreachable.</p>
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-check">&#10003;</span>
+                    <span>Look up any customer by phone number or Wasul code</span>
+                </li>
+                <li>
+                    <span class="feature-check">&#10003;</span>
+                    <span>Get exact GPS coordinates and delivery instructions</span>
+                </li>
+                <li>
+                    <span class="feature-check">&#10003;</span>
+                    <span>One-click Google Maps navigation for drivers</span>
+                </li>
+                <li>
+                    <span class="feature-check">&#10003;</span>
+                    <span>Delivery verification to build address reliability</span>
+                </li>
+            </ul>
+            <a href="https://oman-address-api.onrender.com/docs" class="btn-primary">View API Documentation</a>
+        </div>
+        <div class="api-preview">
+            <div class="api-preview-header">
+                <div class="api-dot red"></div>
+                <div class="api-dot yellow"></div>
+                <div class="api-dot green"></div>
+            </div>
+            <div class="api-preview-body">
+                <span class="comment">// Look up a customer's delivery address</span><br><br>
+                <span class="keyword">GET</span> <span class="url">/api/lookup?phone=96891234567</span><br><br>
+                {<br>
+                &nbsp;&nbsp;<span class="key">"address_code"</span>: <span class="string">"OM-MUS-4729A"</span>,<br>
+                &nbsp;&nbsp;<span class="key">"area"</span>: <span class="string">"Al Khuwair"</span>,<br>
+                &nbsp;&nbsp;<span class="key">"city"</span>: <span class="string">"Muscat"</span>,<br>
+                &nbsp;&nbsp;<span class="key">"delivery_notes"</span>: <span class="string">"White gate, call on arrival"</span>,<br>
+                &nbsp;&nbsp;<span class="key">"google_maps_link"</span>: <span class="string">"maps.google.com/..."</span>,<br>
+                &nbsp;&nbsp;<span class="key">"verified"</span>: <span class="keyword">true</span><br>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Ready to get your address?</h2>
+        <p>It takes less than a minute. Register your home and start receiving deliveries.</p>
+        <div class="cta-buttons">
+            <a href="register.html" class="btn-primary">Register Now</a>
+            <a href="https://oman-address-api.onrender.com/docs" class="btn-secondary">API Docs</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>Wasul &mdash; Bringing delivery to every home in Oman &nbsp;&middot;&nbsp; <a href="https://oman-address-api.onrender.com/docs">API</a> &nbsp;&middot;&nbsp; <a href="register.html">Register</a></p>
+    </footer>
+
+</body>
+</html>
