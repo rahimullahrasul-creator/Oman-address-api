@@ -183,8 +183,22 @@
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
         /* PHONE VERIFY */
-        .phone-input-row { display: flex; gap: 12px; }
-        .phone-input-row input { flex: 1; }
+        .phone-input-row { display: flex; gap: 0; }
+        .phone-input-row input { flex: 1; border-radius: 0; border-left: none; }
+        .phone-prefix {
+            padding: 12px 14px;
+            background: var(--sand-100);
+            border: 1.5px solid var(--sand-200);
+            border-radius: 10px 0 0 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+        }
+        .phone-input-row input#phone { border-radius: 0; }
+        .phone-input-row .send-code-btn { border-radius: 0 10px 10px 0; }
         .send-code-btn, .verify-btn {
             padding: 12px 20px;
             background: var(--charcoal);
@@ -330,7 +344,10 @@
             .form-card { padding: 24px; }
             .form-row { grid-template-columns: 1fr; gap: 20px; }
             .success-actions { flex-direction: column; }
-            .phone-input-row { flex-direction: column; }
+            .phone-input-row { flex-direction: column; gap: 12px; }
+            .phone-input-row .phone-prefix { border-radius: 10px; }
+            .phone-input-row input#phone { border-radius: 10px; border-left: 1.5px solid var(--sand-200); }
+            .phone-input-row .send-code-btn { border-radius: 10px; }
             .verify-row { flex-direction: column; }
         }
 
@@ -408,10 +425,11 @@
                         <div class="form-group">
                             <label for="phone">Phone Number <span class="required">*</span></label>
                             <div class="phone-input-row">
-                                <input type="tel" id="phone" name="phone" placeholder="+968 9123 4567" required />
+                                <div class="phone-prefix">+968</div>
+                                <input type="tel" id="phone" name="phone" placeholder="9123 4567" maxlength="9" inputmode="numeric" required />
                                 <button type="button" class="send-code-btn" id="sendCodeBtn" onclick="sendVerificationCode()">Send Code</button>
                             </div>
-                            <div class="helper-text">Include country code (e.g., +968 for Oman)</div>
+                            <div class="helper-text">Enter your 8-digit Oman mobile number</div>
                         </div>
                         <div id="recaptcha-container"></div>
                         <div id="verifyStep">
@@ -519,21 +537,26 @@
             recaptchaVerifier.render();
         };
 
+        // Auto-format phone input: 9123 4567
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let val = this.value.replace(/\D/g, '');
+            if (val.length > 8) val = val.substring(0, 8);
+            if (val.length > 4) val = val.substring(0, 4) + ' ' + val.substring(4);
+            this.value = val;
+        });
+
         // ============================================================
         // PHONE VERIFICATION
         // ============================================================
         async function sendVerificationCode() {
-            const phoneInput = document.getElementById('phone');
-            let phoneNumber = phoneInput.value.trim();
+            const rawPhone = document.getElementById('phone').value.replace(/\D/g, '');
 
-            if (!phoneNumber) {
-                showError('Please enter your phone number.');
+            if (!rawPhone || rawPhone.length !== 8) {
+                showError('Please enter your 8-digit Oman mobile number.');
                 return;
             }
 
-            // Ensure + prefix, strip spaces
-            phoneNumber = phoneNumber.replace(/\s/g, '');
-            if (!phoneNumber.startsWith('+')) phoneNumber = '+' + phoneNumber;
+            const phoneNumber = '+968' + rawPhone;
 
             const btn = document.getElementById('sendCodeBtn');
             btn.disabled = true;
@@ -549,7 +572,7 @@
                 console.error('SMS Error:', error);
                 let msg = 'Could not send verification code. ';
                 if (error.code === 'auth/invalid-phone-number') {
-                    msg += 'Check the format (e.g., +96891234567).';
+                    msg += 'Please enter a valid 8-digit Oman number.';
                 } else if (error.code === 'auth/too-many-requests') {
                     msg += 'Too many attempts. Wait a few minutes.';
                 } else if (error.code === 'auth/captcha-check-failed') {
@@ -672,8 +695,7 @@
             btn.disabled = true;
             btn.textContent = 'Registering...';
 
-            let phone = document.getElementById('phone').value.trim().replace(/\s/g, '');
-            if (phone.startsWith('+')) phone = phone.substring(1);
+            let phone = '968' + document.getElementById('phone').value.replace(/\D/g, '');
 
             const formData = {
                 phone: phone,
