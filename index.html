@@ -35,6 +35,25 @@
             overflow-x: hidden;
         }
 
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--slate);
+            font-weight: 500;
+            background: none;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            margin-left: 16px;
+        }
+        .lang-toggle:hover { background: var(--sand-100); }
+        .lang-toggle svg { width: 16px; height: 16px; }
+
         /* NAV */
         nav {
             position: fixed;
@@ -58,7 +77,7 @@
             text-decoration: none;
             letter-spacing: -0.5px;
         }
-
+        
         .nav-links {
             display: flex;
             align-items: center;
@@ -742,6 +761,12 @@
 
     <nav>
         <a href="#" class="nav-logo">Wasul</a>
+        <button class="lang-toggle" onclick="toggleLanguage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span id="langLabel">العربية</span>
+        </button>
+        <div class="nav-links">
+        
         <div class="nav-links">
             <a href="#how-it-works">How It Works</a>
             <a href="#for-business">For Business</a>
@@ -964,6 +989,41 @@
     <footer>
         <p>Wasul &mdash; Bringing delivery to every home in Oman &nbsp;&middot;&nbsp; <a href="#faq">FAQ</a> &nbsp;&middot;&nbsp; <a href="#contact">Contact</a> &nbsp;&middot;&nbsp; <a href="register.html">Register</a></p>
     </footer>
+
+    <script>
+    function toggleLanguage() {
+        const isArabic = document.documentElement.lang === 'ar';
+        if (isArabic) {
+            document.documentElement.lang = 'en';
+            document.documentElement.dir = 'ltr';
+            document.getElementById('langLabel').textContent = 'العربية';
+            applyTranslations(translations.en);
+        } else {
+            document.documentElement.lang = 'ar';
+            document.documentElement.dir = 'rtl';
+            document.getElementById('langLabel').textContent = 'English';
+            applyTranslations(translations.ar);
+        }
+    }
+
+    const translations = {
+        en: {
+            '.hero-text h1': 'Deliver to <span>every home</span> in Oman',
+            '.hero-text p': 'Millions of homes in Oman have no street address. Wasul gives every home a unique delivery code, so you can finally receive food, packages, and services — straight to your door.',
+        },
+        ar: {
+            '.hero-text h1': 'التوصيل إلى <span>كل منزل</span> في عمان',
+            '.hero-text p': 'ملايين المنازل في عمان ليس لديها عنوان شارع. وصول يمنح كل منزل رمزًا فريدًا حتى تتمكن من استلام الطعام والطرود والخدمات — مباشرة إلى بابك.',
+        }
+    };
+
+    function applyTranslations(lang) {
+        for (const [selector, text] of Object.entries(lang)) {
+            const el = document.querySelector(selector);
+            if (el) el.innerHTML = text;
+        }
+    }
+    </script>
 
 </body>
 </html>
