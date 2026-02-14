@@ -653,12 +653,40 @@
     const checkData = await checkResp.json();
     console.log('Check-phone data:', JSON.stringify(checkData));
     if (checkData.registered) {
-                        // Phone already registered — show existing code
+                        // Phone already registered — show existing code with map
                         document.getElementById('addressCode').textContent = checkData.address_code;
                         document.getElementById('successMessage').querySelector('h2').textContent = 'You\'re already registered';
                         document.getElementById('successMessage').querySelector('p').textContent = 'This phone number already has a Wasul code. Here it is:';
+
+                        // Add map and contact info after the success actions
+                        const successEl = document.getElementById('successMessage');
+                        const mapDiv = document.createElement('div');
+                        mapDiv.id = 'existingMap';
+                        mapDiv.style.cssText = 'height:220px;border-radius:12px;margin-top:24px;border:1px solid var(--sand-200);';
+                        successEl.appendChild(mapDiv);
+
+                        const locationLabel = document.createElement('div');
+                        locationLabel.style.cssText = 'font-size:0.85rem;color:var(--muted);margin-top:8px;text-align:center;';
+                        locationLabel.textContent = (checkData.area || '') + (checkData.area && checkData.city ? ', ' : '') + (checkData.city || '');
+                        successEl.appendChild(locationLabel);
+
+                        const contactNote = document.createElement('div');
+                        contactNote.style.cssText = 'font-size:0.85rem;color:var(--muted);margin-top:20px;text-align:center;line-height:1.6;';
+                        contactNote.innerHTML = 'Need to update your location?<br><a href="mailto:rahimullahrasul@gmail.com" style="color:var(--orange-500);font-weight:600;text-decoration:none;">Contact us</a>';
+                        successEl.appendChild(contactNote);
+
                         document.getElementById('successMessage').classList.add('visible');
                         document.getElementById('registrationForm').style.display = 'none';
+
+                        // Render map after element is visible
+                        setTimeout(() => {
+                            const existingMap = L.map('existingMap').setView([checkData.latitude, checkData.longitude], 15);
+                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                attribution: '© OpenStreetMap'
+                            }).addTo(existingMap);
+                            L.marker([checkData.latitude, checkData.longitude]).addTo(existingMap);
+                        }, 200);
+
                         return;
                     }
                 } catch (e) {
