@@ -647,12 +647,9 @@
                 // Check if phone is already registered
                 const rawPhone = document.getElementById('phone').value.replace(/\D/g, '');
                 try {
-    console.log('Calling check-phone with: 968' + rawPhone);
-    const checkResp = await fetch(`https://oman-address-api.onrender.com/api/check-phone?phone=968${rawPhone}`);
-    console.log('Check-phone response status:', checkResp.status);
-    const checkData = await checkResp.json();
-    console.log('Check-phone data:', JSON.stringify(checkData));
-    if (checkData.registered) {
+                    const checkResp = await fetch(`https://oman-address-api.onrender.com/api/check-phone?phone=968${rawPhone}`);
+                    const checkData = await checkResp.json();
+                    if (checkData.registered) {
                         // Phone already registered — show existing code with map
                         document.getElementById('addressCode').textContent = checkData.address_code;
                         document.getElementById('successMessage').querySelector('h2').textContent = 'You\'re already registered';
