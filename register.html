@@ -33,6 +33,25 @@
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
         }
+
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--slate);
+            font-weight: 500;
+            background: none;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .lang-toggle:hover { background: var(--sand-200); }
+        .lang-toggle svg { width: 16px; height: 16px; }
+        
         nav {
             padding: 20px 40px;
             display: flex;
@@ -362,12 +381,18 @@
 <body>
 
     <nav>
+    <div style="display: flex; align-items: center; gap: 8px;">
         <a href="index.html" class="nav-logo">Wasul</a>
-        <a href="index.html" class="nav-back">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Back to Home
-        </a>
-    </nav>
+        <button class="lang-toggle" onclick="toggleLanguage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span id="langLabel">العربية</span>
+        </button>
+    </div>
+    <a href="index.html" class="nav-back">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="nav-back-text">Back to Home</span>
+    </a>
+</nav>
 
     <div class="page-layout">
         <aside class="sidebar">
@@ -757,6 +782,164 @@
                 setTimeout(() => btn.textContent = 'Copy Code', 2000);
             });
         }
+
+        // ============================================================
+// TRANSLATION
+// ============================================================
+function toggleLanguage() {
+    const isArabic = document.documentElement.lang === 'ar';
+    if (isArabic) {
+        document.documentElement.lang = 'en';
+        document.documentElement.dir = 'ltr';
+        document.getElementById('langLabel').textContent = 'العربية';
+        applyTranslations(regTranslations.en);
+    } else {
+        document.documentElement.lang = 'ar';
+        document.documentElement.dir = 'rtl';
+        document.getElementById('langLabel').textContent = 'English';
+        applyTranslations(regTranslations.ar);
+    }
+}
+
+const regTranslations = {
+    en: {
+        'nav-back-text': 'Back to Home',
+        'sidebar-h1': 'Register your <span>home</span>',
+        'sidebar-p': 'Add your location once and get a unique code you can use for every delivery, order, and service.',
+        'info-need-h4': 'What you\'ll need',
+        'info-need-1': 'Your phone number for SMS verification',
+        'info-need-2': 'Your home\'s location on the map',
+        'info-need-3': 'Any helpful delivery instructions',
+        'info-safe-h4': 'Your data is safe',
+        'info-safe-1': 'Location shared only with delivery partners at time of order',
+        'info-safe-2': 'Phone verified via SMS to prevent fraud',
+        'form-title': 'Address Registration',
+        'phone-label': 'Verify Your Phone',
+        'phone-input-label': 'Phone Number <span class="required">*</span>',
+        'phone-helper': 'Enter your 8-digit Oman mobile number',
+        'verify-label': 'Verification Code',
+        'verify-helper': 'Enter the 6-digit code sent to your phone',
+        'verified-text': 'Phone number verified',
+        'location-label': 'Location',
+        'location-btn': 'Use My Current Location',
+        'location-helper': 'Click the map to adjust your pin',
+        'details-label': 'Details',
+        'area-label': 'Area / Neighborhood',
+        'city-label': 'City <span class="required">*</span>',
+        'pobox-label': 'P.O. Box',
+        'notes-label': 'Delivery Instructions',
+        'notes-helper': 'Help drivers find your home easily',
+        'submit-btn-locked': 'Verify your phone to register',
+        'submit-btn-ready': 'Register My Address',
+        'send-code-btn': 'Send Code',
+        'verify-btn': 'Verify',
+        'success-h2': 'You\'re registered',
+        'success-p': 'Here\'s your unique Wasul code. Save it and use it when ordering.',
+        'success-hint': 'Share this code with any delivery service',
+        'success-copy': 'Copy Code',
+        'success-another': 'Register Another',
+    },
+    ar: {
+        'nav-back-text': 'العودة للرئيسية',
+        'sidebar-h1': 'سجّل <span>منزلك</span>',
+        'sidebar-p': 'أضف موقعك مرة واحدة واحصل على رمز فريد يمكنك استخدامه في كل طلب توصيل وخدمة.',
+        'info-need-h4': 'ما ستحتاجه',
+        'info-need-1': 'رقم هاتفك للتحقق عبر رسالة نصية',
+        'info-need-2': 'موقع منزلك على الخريطة',
+        'info-need-3': 'أي تعليمات توصيل مفيدة',
+        'info-safe-h4': 'بياناتك آمنة',
+        'info-safe-1': 'الموقع يُشارك فقط مع شريك التوصيل وقت الطلب',
+        'info-safe-2': 'التحقق من الهاتف عبر رسالة نصية لمنع الاحتيال',
+        'form-title': 'تسجيل العنوان',
+        'phone-label': 'تحقق من هاتفك',
+        'phone-input-label': 'رقم الهاتف <span class="required">*</span>',
+        'phone-helper': 'أدخل رقم هاتفك العماني المكون من ٨ أرقام',
+        'verify-label': 'رمز التحقق',
+        'verify-helper': 'أدخل الرمز المكون من ٦ أرقام المرسل لهاتفك',
+        'verified-text': 'تم التحقق من رقم الهاتف',
+        'location-label': 'الموقع',
+        'location-btn': 'استخدم موقعي الحالي',
+        'location-helper': 'انقر على الخريطة لتعديل الموقع',
+        'details-label': 'التفاصيل',
+        'area-label': 'المنطقة / الحي',
+        'city-label': 'المدينة <span class="required">*</span>',
+        'pobox-label': 'صندوق البريد',
+        'notes-label': 'تعليمات التوصيل',
+        'notes-helper': 'ساعد السائقين في العثور على منزلك بسهولة',
+        'submit-btn-locked': 'تحقق من هاتفك للتسجيل',
+        'submit-btn-ready': 'سجّل عنواني',
+        'send-code-btn': 'أرسل الرمز',
+        'verify-btn': 'تحقق',
+        'success-h2': 'تم التسجيل',
+        'success-p': 'إليك رمز وصول الفريد الخاص بك. احفظه واستخدمه عند الطلب.',
+        'success-hint': 'شارك هذا الرمز مع أي خدمة توصيل',
+        'success-copy': 'نسخ الرمز',
+        'success-another': 'تسجيل آخر',
+    }
+};
+
+function applyTranslations(lang) {
+    const map = {
+        'nav-back-text': '#nav-back-text',
+        'sidebar-h1': '.sidebar h1',
+        'sidebar-p': '.sidebar > p',
+        'info-need-h4': '.info-card:nth-child(1) h4',
+        'info-need-1': '.info-card:nth-child(1) .info-item:nth-child(2) span:last-child',
+        'info-need-2': '.info-card:nth-child(1) .info-item:nth-child(3) span:last-child',
+        'info-need-3': '.info-card:nth-child(1) .info-item:nth-child(4) span:last-child',
+        'info-safe-h4': '.info-card:nth-child(2) h4',
+        'info-safe-1': '.info-card:nth-child(2) .info-item:nth-child(2) span:last-child',
+        'info-safe-2': '.info-card:nth-child(2) .info-item:nth-child(3) span:last-child',
+        'form-title': '.form-title',
+        'phone-label': '#phoneStep .form-section-label',
+        'phone-input-label': 'label[for="phone"]',
+        'phone-helper': '#phoneStep .form-group:first-child .helper-text',
+        'verify-label': 'label[for="verifyCode"]',
+        'verify-helper': '#verifyStep .helper-text',
+        'verified-text': '#verifiedBadge span',
+        'location-label': '#locationSection .form-section-label',
+        'location-btn': '.location-btn',
+        'location-helper': '.map-container .helper-text',
+        'details-label': '#detailsSection .form-section-label',
+        'area-label': 'label[for="area"]',
+        'city-label': 'label[for="city"]',
+        'pobox-label': 'label[for="po_box"]',
+        'notes-label': 'label[for="delivery_notes"]',
+        'notes-helper': '#detailsSection .form-group:last-child .helper-text',
+        'submit-btn-locked': null,
+        'submit-btn-ready': null,
+        'send-code-btn': '#sendCodeBtn',
+        'verify-btn': '#verifyBtn',
+        'success-h2': '.success-overlay h2',
+        'success-p': '.success-overlay > p',
+        'success-hint': '.code-hint',
+        'success-copy': '.success-btn.primary',
+        'success-another': '.success-btn.secondary',
+    };
+
+    for (const [key, selector] of Object.entries(map)) {
+        if (!selector) continue;
+        const el = document.querySelector(selector);
+        if (el) {
+            // For buttons with SVG icons, only update text content carefully
+            if (key === 'location-btn') {
+                const svg = el.querySelector('svg');
+                el.innerHTML = '';
+                if (svg) el.appendChild(svg);
+                el.appendChild(document.createTextNode(' ' + lang[key]));
+            } else {
+                el.innerHTML = lang[key];
+            }
+        }
+    }
+
+    // Handle submit button based on verification state
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) {
+        submitBtn.textContent = phoneVerified ? lang['submit-btn-ready'] : lang['submit-btn-locked'];
+    }
+}
+        
     </script>
 </body>
 </html>
