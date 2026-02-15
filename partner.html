@@ -446,10 +446,6 @@
             <h1>Partner <span>Portal</span></h1>
             <p>Look up customer addresses for delivery. Enter your API key to get started.</p>
             <div class="login-group">
-                <label>Restaurant Name</label>
-                <input type="text" id="partnerNameInput" placeholder="e.g., Smash Attack Burgers" />
-            </div>
-            <div class="login-group">
                 <label>API Key</label>
                 <input type="text" id="apiKeyInput" placeholder="omaddr_xxxxxxxxxxxxxxxx" autocomplete="off" />
             </div>
@@ -529,53 +525,50 @@
         });
 
         async function handleLogin() {
-            const apiKey = document.getElementById('apiKeyInput').value.trim();
-            const errorEl = document.getElementById('loginError');
-            errorEl.style.display = 'none';
+    const apiKey = document.getElementById('apiKeyInput').value.trim();
+    const errorEl = document.getElementById('loginError');
+    errorEl.style.display = 'none';
 
-            if (!apiKey) {
-                errorEl.textContent = 'Please enter your API key.';
-                errorEl.style.display = 'block';
-                return;
-            }
+    if (!apiKey) {
+        errorEl.textContent = 'Please enter your API key.';
+        errorEl.style.display = 'block';
+        return;
+    }
 
-            const btn = document.getElementById('loginBtn');
-            btn.disabled = true;
-            btn.textContent = 'Verifying...';
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true;
+    btn.textContent = 'Verifying...';
 
-            try {
-                // Verify key by making a test lookup (will return 404 or result, either means key is valid)
-                const resp = await fetch(`${API_URL}/api/lookup?phone=test&X-API-Key=${encodeURIComponent(apiKey)}`);
+    try {
+        const resp = await fetch(`${API_URL}/api/partner-info?X-API-Key=${encodeURIComponent(apiKey)}`);
 
-                if (resp.status === 401) {
-                    errorEl.textContent = 'Invalid API key. Please check and try again.';
-                    errorEl.style.display = 'block';
-                    btn.disabled = false;
-                    btn.textContent = 'Sign In';
-                    return;
-                }
-
-                // Key is valid (we got 404 not found or 200 — both mean the key works)
-                // Get partner name from stats or just use a generic name
-                currentApiKey = apiKey;
-                currentPartnerName = document.getElementById('partnerNameInput').value.trim() || 'Partner';
-
-                // Save session
-                localStorage.setItem('wasul_partner', JSON.stringify({
-                    apiKey: currentApiKey,
-                    partnerName: currentPartnerName
-                }));
-
-                showPortal();
-
-            } catch (error) {
-                errorEl.textContent = 'Could not connect to server. Please try again.';
-                errorEl.style.display = 'block';
-            }
-
+        if (resp.status === 401) {
+            errorEl.textContent = 'Invalid API key. Please check and try again.';
+            errorEl.style.display = 'block';
             btn.disabled = false;
             btn.textContent = 'Sign In';
+            return;
         }
+
+        const data = await resp.json();
+        currentApiKey = apiKey;
+        currentPartnerName = data.partner_name;
+
+        localStorage.setItem('wasul_partner', JSON.stringify({
+            apiKey: currentApiKey,
+            partnerName: currentPartnerName
+        }));
+
+        showPortal();
+
+    } catch (error) {
+        errorEl.textContent = 'Could not connect to server. Please try again.';
+        errorEl.style.display = 'block';
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
+}
 
         function showPortal() {
             document.getElementById('loginView').style.display = 'none';
