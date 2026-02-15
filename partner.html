@@ -446,6 +446,10 @@
             <h1>Partner <span>Portal</span></h1>
             <p>Look up customer addresses for delivery. Enter your API key to get started.</p>
             <div class="login-group">
+                <label>Restaurant Name</label>
+                <input type="text" id="partnerNameInput" placeholder="e.g., Smash Attack Burgers" />
+            </div>
+            <div class="login-group">
                 <label>API Key</label>
                 <input type="text" id="apiKeyInput" placeholder="omaddr_xxxxxxxxxxxxxxxx" autocomplete="off" />
             </div>
@@ -474,8 +478,7 @@
             </div>
 
             <div class="stats-bar" id="statsBar">
-                <div class="stat-pill">Lookups: <strong id="statLookups">0</strong></div>
-                <div class="stat-pill">Session: <strong id="statSession">0</strong></div>
+                <div class="stat-pill">Lookups this session: <strong id="statLookups">0</strong></div>
             </div>
 
             <div class="search-card">
@@ -555,7 +558,7 @@
                 // Key is valid (we got 404 not found or 200 — both mean the key works)
                 // Get partner name from stats or just use a generic name
                 currentApiKey = apiKey;
-                currentPartnerName = 'Partner';
+                currentPartnerName = document.getElementById('partnerNameInput').value.trim() || 'Partner';
 
                 // Save session
                 localStorage.setItem('wasul_partner', JSON.stringify({
@@ -591,7 +594,7 @@
             document.getElementById('apiKeyInput').value = '';
             document.getElementById('resultCard').className = 'result-card';
             document.getElementById('resultCard').innerHTML = '';
-            document.getElementById('statSession').textContent = '0';
+            document.getElementById('statLookups').textContent = '0';
         }
 
         // ============================================================
@@ -643,7 +646,7 @@
 
                 const data = await resp.json();
                 sessionLookups++;
-                document.getElementById('statSession').textContent = sessionLookups;
+                document.getElementById('statLookups').textContent = sessionLookups;
 
                 const verifiedBadge = data.verified
                     ? '<span class="result-badge verified">Verified</span>'
