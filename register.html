@@ -725,6 +725,11 @@
         }
 
         // Enter key submits verification code
+
+        document.getElementById('phone').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); sendVerificationCode(); }
+        });
+        
         document.getElementById('verifyCode').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') { e.preventDefault(); verifyCode(); }
         });
